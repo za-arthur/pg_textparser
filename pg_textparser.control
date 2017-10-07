@@ -1,0 +1,5 @@
+# pg_textparser extension
+comment = 'text search parser'
+default_version = '1.0'
+module_pathname = '$libdir/pg_textparser'
+relocatable = true
