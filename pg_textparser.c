@@ -8,7 +8,7 @@
 #include "postgres.h"
 #include "fmgr.h"
 
-#include "pg_textparser.h"
+#include "textdata.h"
 
 PG_MODULE_MAGIC;
 

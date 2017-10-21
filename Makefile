@@ -1,7 +1,7 @@
 # pg_textparser/Makefile
 
 MODULE_big = pg_textparser
-OBJS = pg_textparser.o $(WIN32RES)
+OBJS = pg_textparser.o textscan.o $(WIN32RES)
 
 EXTENSION = pg_textparser
 DATA = pg_textparser--1.0.sql
@@ -19,3 +19,12 @@ top_builddir = ../..
 include $(top_builddir)/src/Makefile.global
 include $(top_srcdir)/contrib/contrib-global.mk
 endif
+
+textscan.c: FLEXFLAGS = -Cfe -p -p
+textscan.c: FLEX_NO_BACKUP=yes
+textscan.c: FLEX_FIX_WARNING=yes
+
+distprep: textscan.c
+
+maintainer-clean:
+	rm -f textscan.c

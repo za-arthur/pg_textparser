@@ -1,26 +1,24 @@
 %{
-/*
- * A scanner for text search
+/*-------------------------------------------------------------------------
  * textscan.l
+ * 	  A scanner for text search
+ *
+ *-------------------------------------------------------------------------
  */
+#include "postgres.h"
 
-/* No reason to constrain amount of data slurped */
-#define YY_READ_BUF_SIZE 16777216
+#include "textdata.h"
 
-/* Avoid exit() on fatal scanner errors (a bit ugly -- see yy_fatal_error) */
-#undef fprintf
-#define fprintf(file, fmt, msg)  fprintf_to_ereport(fmt, msg)
-
-static void
-fprintf_to_ereport(const char *fmt, const char *msg)
-{
-	ereport(ERROR, (errmsg_internal("%s", msg)));
-}
+/*
+ * We must have a typedef YYSTYPE for yylex's first argument, but this lexer
+ * doesn't presently make use of that argument, so just declare it as int.
+ */
+typedef int YYSTYPE;
 
 /* Handles to the buffer that the lexer uses internally */
 static YY_BUFFER_STATE scanbufhandle;
 static char *scanbuf;
-/static int	scanbuflen;
+static int	scanbuflen;
 %}
 
 %option 8bit
@@ -33,11 +31,12 @@ static char *scanbuf;
 %option prefix="text_yy"
 
 digit		[0-9]
-host_name	[A-Za-z]+.[A-Za-z]+
+
+other		.
 
 %%
 
-[A-Za-z]+@{host_name}	return EMAIL;
+{digit}	return 0;
 
 %%
 
